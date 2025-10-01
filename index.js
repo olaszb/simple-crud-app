@@ -1,22 +1,25 @@
-import express from "express";
-import mongoose from "mongoose";
-import Product from "./models/product.model.js";
+const express = require("express")
+const mongoose = require("mongoose")
+const Product = require("./models/product.model.js");
+const productRoute =  require("./routes/product.route.js");
 const app = express();
 
+
+//middleware
 app.use(express.json());
+app.use(express.urlencoded({extended: false}))
+
+
+//routes
+// app.use("/api/products", productRoute)
+
+
 
 app.get("/", (req, res) => {
   res.send("Hello from Node API");
 });
 
-app.get("/api/products", async (req, res) => {
-  try {
-    const products = await Product.find({});
-    res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+
 
 app.get("/api/products/:id", async (req, res) => {
   try {
@@ -38,7 +41,7 @@ app.post("/api/products", async (req, res) => {
 });
 
 //update product
-app.put("/api/product/:id", async (req, res) => {
+app.put("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -58,7 +61,7 @@ app.put("/api/product/:id", async (req, res) => {
 
 // delete a product
 
-app.delete("/api/product/:id", async (req, res) => {
+app.delete("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
